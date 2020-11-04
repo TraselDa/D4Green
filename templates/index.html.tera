@@ -51,7 +51,7 @@
     			<th>Commune</th>
 			<th>Indice</th>
   		</tr>
-		{% for i in 0..10 %}
+		{% for i in range(end=10) %}
   			<tr>
     				<td>Pays de Loire</td>
     				<td>Maine et Loire</td>
