@@ -20,6 +20,7 @@
 		}
 	</style>
         <title>{% block title %}Yessss{% endblock title %}</title>
+            <link rel="stylesheet" href="templates/style.css" />
     </head>
     <body>
         <select name="select_box_region">
