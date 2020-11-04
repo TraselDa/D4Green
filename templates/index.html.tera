@@ -1,1 +1,67 @@
-new test web
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+	<style>
+		table {
+  			font-family: arial, sans-serif;
+  			border-collapse: collapse;
+  			width: 100%;
+		}
+
+		td, th {
+ 		 border: 1px solid #dddddd;
+  		text-align: left;
+  		padding: 8px;
+		}
+
+		tr:nth-child(even) {
+ 		background-color: #dddddd;
+		}
+	</style>
+        <title>{% block title %}Yessss{% endblock title %}</title>
+    </head>
+    <body>
+        <select name="select_box_region">
+	        <option>Pays de Loire</option>
+	        <option>hchdsdchd</option>
+	        <option>zk hh dhh</option>
+            <option>uujanc</option>
+            <option>sczf_he</option>
+        </select>
+        <select name="select_box_departement">
+	        <option>Pays de Loire</option>
+	        <option>hchdsdchd</option>
+	        <option>zk hh dhh</option>
+            <option>uujanc</option>
+            <option>sczd_he</option>
+        </select>
+        <select name="select_box_commune">
+	        <option>Pays de Loire</option>
+	        <option>hchdsdchd</option>
+	        <option>zk hh dhh</option>
+            <option>uujanc</option>
+            <option>sczd_he</option>
+        </select>
+        <table>
+  		<tr>
+    			<th>Region</th>
+    			<th>Departement</th>
+			    <th>Code Postal</th>
+    			<th>Commune</th>
+				<th>Indice</th>
+				<th></th>
+  		</tr>
+		{% for i in range(end=10) %}
+  			<tr>
+    				<td>Pays de Loire</td>
+    				<td>Maine et Loire</td>
+   				    <td>Saint-Barth�l�my-d'Anjou</td>
+				    <td>1420</td>
+					<td>5662</td>
+					<td><button onclick="">>></button></td>
+  			</tr>
+		{% endfor %}
+    </body>
+</html>
+
