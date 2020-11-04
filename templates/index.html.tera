@@ -1,68 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    body {
+    font-family: "Roboto", sans-serif;
+    background: #7e8b91;
+    margin: 1%;
+    box-sizing: border-box;
+}
+
+.container {
+    display: block;
+    width: 100%;
+    margin: auto;
+}
+
+
+.content-column {
+    background: white;
+    width: 95%;
+    height:100%;
+    min-width: 900px;
+}
+@media only screen and (max-width: 1250px) {
+    .content-column {
+        width: 77%;
+    }
+}
+
+.search-column {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #e3e8e9;
+    padding: 2.5% 2%;
+    height:100%;
+}
+@media only screen and (max-width: 1250px) {
+    .search-column {
+        display: none;
+    }
+}
+
+.search-column .search-container {
+    position: relative;
+    width: 100%;
+    flex: 2;
+}
+.search-column .search-container input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #d9dfe1;
+    color: #9da5a6;
+    font-size: 1.25em;
+    font-weight: 300;
+    text-indent: 20%;
+}
+
+.search-column .data_global {
+    flex: 2;
+    width: 100%;
+}
+.search-column .data_table {
+    flex: 6;
+    display: block;
+    width: 100%;
+}
+#search{
+    margin-left:7%;
+    width:30%;
+    height:50%;
+    border-radius: 12px;
+    background-color: #8b9494;
+    color: white;
+}
+
+.table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table td, .table th{
+    padding: 8px;
+}
+.table th{
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+}
+.table td{
+    text-align: center;
+}
+.table tr:nth-child(even){background-color: #f2f2f2}
+.table tr:hover{background-color: #ddd}
+button {
+
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #d9dfe1;
+    text-align: center;
+    color: black;
+    font-size: 16px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+
+select {
+    position: relative;
+    font-family: "Roboto", sans-serif;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-left: 20px;
+    border: 1px solid #d6dadc;
+    color: #5d7171;
+    width: 110px;
+    height: 30px;
+    border-radius: 25px;
+    text-indent: 7px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: 0;
+}
+
+
+
+</style>
+
     <head>
         <meta charset="utf-8">
-	<style>
-		table {
-  			font-family: arial, sans-serif;
-  			border-collapse: collapse;
-  			width: 100%;
-		}
-
-		td, th {
- 		 border: 1px solid #dddddd;
-  		text-align: left;
-  		padding: 8px;
-		}
-
-		tr:nth-child(even) {
- 		background-color: #dddddd;
-		}
-	</style>
         <title>{% block title %}Yessss{% endblock title %}</title>
             <link rel="stylesheet" href="templates/style.css" />
     </head>
-    <body>
-        <select name="select_box_region">
-	        <option>Pays de Loire</option>
-	        <option>hchdsdchd</option>
-	        <option>zk hh dhh</option>
-            <option>uujanc</option>
-            <option>sczf_he</option>
-        </select>
-        <select name="select_box_departement">
-	        <option>Pays de Loire</option>
-	        <option>hchdsdchd</option>
-	        <option>zk hh dhh</option>
-            <option>uujanc</option>
-            <option>sczd_he</option>
-        </select>
-        <select name="select_box_commune">
-	        <option>Pays de Loire</option>
-	        <option>hchdsdchd</option>
-	        <option>zk hh dhh</option>
-            <option>uujanc</option>
-            <option>sczd_he</option>
-        </select>
-        <table>
-  		<tr>
-    			<th>Region</th>
-    			<th>Departement</th>
-			    <th>Code Postal</th>
-    			<th>Commune</th>
-				<th>Indice</th>
-				<th></th>
-  		</tr>
-		{% for i in range(end=10) %}
-  			<tr>
-    				<td>Pays de Loire</td>
-    				<td>Maine et Loire</td>
-   				    <td>Saint-Barth�l�my-d'Anjou</td>
-				    <td>1420</td>
-					<td>5662</td>
-					<td><button onclick="">>></button></td>
-  			</tr>
-		{% endfor %}
-    </body>
-</html>
 
+<div class="container">
+
+  <div class="content-column">
+
+    <div class="search-column" style="width:100%" >
+        <div class="search-container" >
+
+           <select name="select_box_region">
+        	        <option>Pays de Loire</option>
+        	        <option>hchdsdchd</option>
+        	        <option>zk hh dhh</option>
+                    <option>uujanc</option>
+                    <option>sczf_he</option>
+                </select>
+                <select name="select_box_departement">
+        	        <option>Pays de Loire</option>
+        	        <option>hchdsdchd</option>
+        	        <option>zk hh dhh</option>
+                    <option>uujanc</option>
+                    <option>sczd_he</option>
+                </select>
+                <select name="select_box_commune">
+        	        <option>Pays de Loire</option>
+        	        <option>hchdsdchd</option>
+        	        <option>zk hh dhh</option>
+                    <option>uujanc</option>
+                    <option>sczd_he</option>
+                </select>
+        		<select name="select_box_codepostal">
+        	        <option>Pays de Loire</option>
+        	        <option>hchdsdchd</option>
+        	        <option>zk hh dhh</option>
+                    <option>uujanc</option>
+                    <option>sczd_he</option>
+                </select>
+
+                 <input id="search" type="text" placeholder="Search"/>
+        </div>
+
+                <div class="data_global">
+                    not vide
+                </div>
+
+                <div class="data_table">
+
+                <table class="table" style="width:85%">
+          		<tr>
+            			<th>Region</th>
+            			<th>Departement</th>
+        			    <th>Code Postal</th>
+            			<th>Commune</th>
+        				<th>Indice</th>
+        				<th></th>
+          		</tr>
+        		{% for i in range(end=10) %}
+          			<tr>
+            				<td>Pays de Loire</td>
+            				<td>Maine et Loire</td>
+           				    <td>Saint-Barthelemy-d'Anjou</td>
+        				    <td>1420</td>
+        					<td>5662</td>
+        					<td><button onclick=""> voir plus </button></td>
+          			</tr>
+        		{% endfor %}
+        		</table>
+
+            </div>
+    </div>
+
+
+
+
+    </div>
+  </div>
+</div>
