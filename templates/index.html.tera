@@ -49,7 +49,8 @@
     			<th>Departement</th>
 			    <th>Code Postal</th>
     			<th>Commune</th>
-			<th>Indice</th>
+				<th>Indice</th>
+				<th></th>
   		</tr>
 		{% for i in range(end=10) %}
   			<tr>
@@ -57,7 +58,8 @@
     				<td>Maine et Loire</td>
    				    <td>Saint-Barth�l�my-d'Anjou</td>
 				    <td>1420</td>
-					<td>1420</td>
+					<td>5662</td>
+					<td><button onclick="">>></button></td>
   			</tr>
 		{% endfor %}
     </body>
