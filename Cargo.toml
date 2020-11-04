@@ -9,6 +9,8 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.4.5"
+cdrs = { version = "2" }
+
 [dependencies.rocket_contrib]
 version = "0.4.5"
 default-features = false
