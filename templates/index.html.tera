@@ -1,83 +1,92 @@
 
 <head>
-        <meta charset="utf-8">
-        <title>{% block title %}Yessss{% endblock title %}</title>
-        <link href="../static/css/index.css" rel="stylesheet">
-    </head>
+    <meta charset="utf-8">
+    <title>{% block title %}Yessss{% endblock title %}</title>
+    <link href="../static/css/index.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/index.js"></script>
+</head>
 
 
 <div class="container">
 
-  <div class="content-column">
+    <div class="content-column">
 
-    <div class="search-column" style="width:100%" >
-        <div class="search-container" >
+        <div class="search-column" style="width:100%" >
+            <div class="search-container" >
 
-           <select name="select_box_region">
-        	        <option>Pays de Loire</option>
-        	        <option>hchdsdchd</option>
-        	        <option>zk hh dhh</option>
+                <select name="select_box_region">
+                    <option>Pays de Loire</option>
+                    <option>hchdsdchd</option>
+                    <option>zk hh dhh</option>
                     <option>uujanc</option>
                     <option>sczf_he</option>
                 </select>
                 <select name="select_box_departement">
-        	        <option>Pays de Loire</option>
-        	        <option>hchdsdchd</option>
-        	        <option>zk hh dhh</option>
+                    <option>Pays de Loire</option>
+                    <option>hchdsdchd</option>
+                    <option>zk hh dhh</option>
                     <option>uujanc</option>
                     <option>sczd_he</option>
                 </select>
                 <select name="select_box_commune">
-        	        <option>Pays de Loire</option>
-        	        <option>hchdsdchd</option>
-        	        <option>zk hh dhh</option>
+                    <option>Pays de Loire</option>
+                    <option>hchdsdchd</option>
+                    <option>zk hh dhh</option>
                     <option>uujanc</option>
                     <option>sczd_he</option>
                 </select>
-        		<select name="select_box_codepostal">
-        	        <option>Pays de Loire</option>
-        	        <option>hchdsdchd</option>
-        	        <option>zk hh dhh</option>
+                <select name="select_box_codepostal">
+                    <option>Pays de Loire</option>
+                    <option>hchdsdchd</option>
+                    <option>zk hh dhh</option>
                     <option>uujanc</option>
                     <option>sczd_he</option>
                 </select>
 
-                 <input id="search" type="text" placeholder="Search"/>
-        </div>
+                <input id="search" type="search" placeholder="Search"/>
 
-                <div class="data_global">
-                    not vide
-                </div>
-
-                <div class="data_table">
-
-                <table class="table" style="width:85%">
-          		<tr>
-            			<th>Region</th>
-            			<th>Departement</th>
-        			    <th>Code Postal</th>
-            			<th>Commune</th>
-        				<th>Indice</th>
-        				<th></th>
-          		</tr>
-        		{% for i in range(end=10) %}
-          			<tr>
-            				<td>Pays de Loire</td>
-            				<td>Maine et Loire</td>
-           				    <td>Saint-Barthelemy-d'Anjou</td>
-        				    <td>1420</td>
-        					<td>5662</td>
-        					<td><button onclick=""> voir plus </button></td>
-          			</tr>
-        		{% endfor %}
-        		</table>
 
             </div>
-    </div>
+
+            <div class="data_global">
+                not vide
+            </div>
+
+            <div class="data_table">
+                <div id="table-data">
+                <table class="table" style="width:85%">
+                    <tr>
+                        <th>Region</th>
+                        <th>Departement</th>
+                        <th>Code Postal</th>
+                        <th>Commune</th>
+                        <th>Indice</th>
+                        <th></th>
+                    </tr>
+                    {% for i in range(end=50) %}
+                    <tr id= " {{  i }} " >
+                        <td>Pays de Loire</td>
+                        <td>Maine et Loire</td>
+                        <td>Saint-Barthelemy-d'Anjou</td>
+                        <td>1420</td>
+                        <td>5662</td>
+                        <td><button id="voir{{  i }}" class="buttonVoir" onclick="toogle(this)"> voir plus </button></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                </div>
+
+                <div id="data-details">
+                    <p id="titre"> </p>
+                </div>
+
+
+            </div>
+        </div>
 
 
 
 
     </div>
-  </div>
+</div>
 </div>
