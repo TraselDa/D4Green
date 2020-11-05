@@ -24,7 +24,7 @@ fn index() -> Template {
 }
 
 fn main() {
-    //let mut session = connect_to_db();
+    let mut session = connect_to_db();
     rocket::ignite()
         .mount("/static",StaticFiles::from("./static"))
         .attach(Template::fairing())
