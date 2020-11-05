@@ -1,40 +1,39 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-use rocket_contrib::templates::Template;
-use std::collections::HashMap;
+
+#[macro_use]
 extern crate cdrs;
-use cdrs::authenticators::StaticPasswordAuthenticator;
-use cdrs::authenticators::NoneAuthenticator;
-use cdrs::cluster::session::{new as new_session,Session};
-use cdrs::cluster::{ClusterTcpConfig, NodeTcpConfigBuilder,TcpConnectionPool};
-use cdrs::load_balancing::RoundRobin;
-use cdrs::query::*;
-
-use cdrs::frame::IntoBytes;
-use cdrs::types::from_cdrs::FromCDRSByName;
-use cdrs::types::prelude::*;
-
-type CurrentSession = Session<RoundRobin<TcpConnectionPool<StaticPasswordAuthenticator>>>;
+#[macro_use]
+extern crate cdrs_helpers_derive;
+extern crate uuid;
+extern crate time;
+use rocket_contrib::templates::Template;
+use cdrs::frame::traits::*;
+use cdrs::query::QueryValues;
+use std::collections::HashMap;
+use rocket_contrib::serve::StaticFiles;
+mod departement;
+mod db;
 
 #[macro_use] extern crate rocket;
 
 #[get("/")]
 fn index() -> Template {
    let mut context:HashMap<u32,u32> = HashMap::new();
-    Template::render("index",&context)    
+    Template::render("index",&context)
 
 }
 
 fn main() {
-    let user = "user";
-    let password = "password";
-    let auth = StaticPasswordAuthenticator::new(&user, &password);
-    let node = NodeTcpConfigBuilder::new("localhost:9042", auth).build();
-    let cluster_config = ClusterTcpConfig(vec![node]);
-    let no_compression: CurrentSession =
-        new_session(&cluster_config, RoundRobin::new()).expect("session should be created");
-
-
+    //let mut session = connect_to_db();
     rocket::ignite()
+        .mount("/static",StaticFiles::from("./static"))
         .attach(Template::fairing())
         .mount("/", routes![index]).launch();
+
+}
+
+fn connect_to_db() -> db::CurrentSession {
+    let mut session = db::create_db_session().expect("create db session error");
+    db::create_keyspace(&mut session).expect("create keyspace error");
+    session
 }
