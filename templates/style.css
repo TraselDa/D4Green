@@ -1,0 +1,32 @@
+
+@media only screen and (min-width: 600px) {
+
+    div.container {
+        width:100%
+    }
+
+    div.content-column {
+        width:80%
+    }
+
+    div.search-column {
+        width:80%
+    }
+
+    div.search-container {
+        width:12%
+    }
+
+    div.data_global {
+        width:23%
+    }
+
+    div.data_table {
+        width:65%
+    }
+
+    div.data-details {
+        width:5%
+    }
+
+}
