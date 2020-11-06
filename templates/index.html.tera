@@ -1,4 +1,6 @@
-<head>
+<!DOCTYPE html >
+<html lang="fr">
+<head >
     <meta charset="utf-8">
     <title>{% block title %}Eclipse Design4 Green{% endblock title %}</title>
     <link href="../static/css/index.css" rel="stylesheet">
@@ -15,7 +17,7 @@
                 </h2>
                 <div class="search-container" >
                     <div class="select_container">
-                        <label>Selection d'un département</label>
+                        <label>Selection d'une region</label>
                         <select name="select_box_region"  class="select_box" id="box-region" onchange="selectRegion(this)">
                             <option>Tout</option>
                             {% for region in data.regions_names %}
@@ -33,7 +35,7 @@
                         </select>
                     </div>
                     <div class="select_container">
-                        <label>Selection d'un département</label>
+                        <label>Selection d'une commune</label>
                         <select name="select_box_commune" id="box-commune" class="select_box" onchange="selectCommune(this)">
                             <option>Tout</option>
                             {% for commune in data.communes_names %}
@@ -61,8 +63,9 @@
                             </tbody>
                         </table>
                         <div class="navigator-container">
-                            <a href="#" class="btn-navigate" onclick="navigatePrev()">&lt;</a>
-                            <a href="#" class="btn-navigate" onclick="navigateNext()">&gt;</a>
+                            <a href="#" class="btn-navigate" onclick="navigatePrev()">&xlArr;</a>
+                            <a href="#" class="btn-navigate" onclick="navigateNext()">&xrArr;</a>
+
                         </div>
                     </div>
                     <div id="data-details">
@@ -88,14 +91,13 @@
                         <p id ="_COMPETENCES_NUM_"> </p>
                         <a href="" id="dwn_btn" class="download_btn">telecharger</a>
                     </div>
+
                 </div>
             </div>
 
-
-
-
         </div>
     </div>
-    <script type="text/javascript" src="../static/js/index.js"></script>
+    <script src="../static/js/index.js"></script>
 </body>
+</html>
 
