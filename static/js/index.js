@@ -1,18 +1,18 @@
-function toogle(y)
+function toogle(y,commune)
 {
 
     const x = document.getElementById("data-details");
     if(x.style.display === "none")
     {
-        document.getElementById("data-details").style.flex ="3";
-        document.getElementById("data-details").style.display = "block";
+        x.style.flex ="3";
+        x.style.display = "block";
         document.querySelector(".buttonVoir").innerHTML = "voir plus";
         document.getElementById(y.id).innerHTML = "voir moins";
-        voir_details(y);
+        voir_details(commune);
     } else
     {
-        document.getElementById("data-details").style.flex ="0";
-        document.getElementById("data-details").style.display = "none";
+        x.style.flex ="0";
+        x.style.display = "none";
         document.querySelector(".buttonVoir").innerHTML = "voir plus";
         document.getElementById(y.id).innerHTML = "voir plus";
     }
@@ -36,9 +36,10 @@ function voir_details(x)
 
 window.addEventListener("DOMContentLoaded", (event) => {
     loadingDiv=document.getElementsByClassName("loading-overlay")[0];
+    loadingDiv.style.display="none";
     loadDatatable();
 });
-function loadDatatable(page=1){
+function loadDatatable(page=1,id=undefined,region=undefined){
     if (window.XMLHttpRequest) {
         httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function() {
@@ -53,8 +54,13 @@ function loadDatatable(page=1){
                 }
             }
         };
-        var params={page:page};
+        var params={current_page:page};
+        if(id!=undefined)
+            params["last_id"]=parseInt(id);
+        if(region!=undefined)
+            params["region"]=region;
         httpRequest.open('POST', '/loadTable', true);
+        httpRequest.setRequestHeader("Content-Type", "application/x-commune-paging;charset=UTF-8");
         httpRequest.send(JSON.stringify(params));
     }
 }
@@ -63,23 +69,38 @@ function fillTableau(communes){
     table.innerHTML = "";
     for(var i=0;i<communes.length;i++){
         var commune=communes[i];
+        var communeId=commune['id'];
         var row = table.insertRow();
-        var cell1 = row.insertCell();
-        cell1.innerText=commune['nomdep'];
-        var cell2 = row.insertCell();
-        cell2.innerText=commune['nomr'];
+        row.dataset.key=communeId;
+        row.insertCell().innerText=commune['nom_com'];
+        row.insertCell().innerText=commune['nomdep'];
+        row.insertCell().innerText=commune['nomr'];
+        row.insertCell().innerText=commune['population'];
+        row.insertCell().innerText=commune['score_global'];
+        row.insertCell().innerHTML='<button class="buttonVoir" onclick="toogle(this,commune)"> voir plus </button></td>';
+
     }
 }
 function navigateNext(){
 var tables=document.getElementById("table-items");
+var body=document.getElementById("table_body");
 var current_page=parseInt(tables.dataset.index);
+
 current_page+=1;
 tables.dataset.index=current_page;
-loadDatatable(current_page);
+var t=body.rows.length;
+var last_row =body.rows[t-1];
+loadDatatable(current_page,last_row.dataset.key);
 }
 function navigatePrev(){
     var current_page=parseInt(tables.dataset.index);
     current_page-=1;
+    var t=body.rows.length;
+    var first_row =body.rows[0];
     tables.dataset.index=current_page;
-    loadDatatable(current_page);
+    loadDatatable(current_page,last_row.dataset.key);
+}
+function selectRegion(parent){
+    var value = document.getElementById("box-region").value;
+    loadDatatable(1,undefined,value)
 }

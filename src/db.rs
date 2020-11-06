@@ -13,10 +13,10 @@ use cdrs::{
     query::*,
     Result as CDRSResult,
 };
+use crate::CommunePaging;
 use crate::departement::*;
 use crate::commune::Commune;
 use crate::region::Region;
-use cdrs::frame::frame_error::CDRSError;
 use cdrs::error::*;
 use crate::cdrs::frame::TryFromRow;
 
@@ -52,7 +52,8 @@ static SELECT_ALL_REGION_BY_NAME_QUERY: &'static str = r#"
   SELECT nomr FROM eclipse_base.Region WHERE nomr LIKE %?%;
 "#;
 static SELECT_ALL_COMMUNE_QUERY: &'static str = r#"
-  SELECT nom_com ,
+  SELECT id,
+  nom_com ,
     code_iris ,
     acces_a_linformation ,
     acces_aux_interfaces_numerique ,
@@ -65,7 +66,7 @@ static SELECT_ALL_COMMUNE_QUERY: &'static str = r#"
     nomdep ,
     nomr ,
     population,
-    score_global FROM eclipse_base.communes LIMIT 20;
+    score_global FROM eclipse_base.communes_temp LIMIT 20 ALLOW FILTERING;
 "#;
 static SELECT_ALL_COMMUNE_NAME_QUERY: &'static str = r#"
   SELECT nom_com FROM eclipse_base.communes;
@@ -79,7 +80,40 @@ static SELECT_ALL_COMMUNE_BY_DEPARTEMENT_QUERY: &'static str = r#"
 static SELECT_ALL_COMMUNE_BY_REGION_QUERY: &'static str = r#"
   SELECT nomr FROM eclipse_base.communes WHERE nomr LIKE %?% LIMIT 20;
 "#;
-
+static SELECT_ALL_COMMUNE_PAGING_QUERY: &'static str = r#"
+   SELECT id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global FROM eclipse_base.communes_temp WHERE id > ? LIMIT 20 ALLOW FILTERING;
+"#;
+static SELECT_ALL_COMMUNE_ALL_PARAMS_QUERY:&'static str = r#"
+   SELECT id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global FROM eclipse_base.communes_temp WHERE id > ? LIMIT 20 ALLOW FILTERING;
+"#;
 
 pub type CurrentSession = Session<SingleNode<TcpConnectionPool<NoneAuthenticator>>>;
 
@@ -123,7 +157,7 @@ pub fn select_departements_by_name(session: &mut CurrentSession, name: String,li
 }
 pub fn select_departements(
     session: &mut CurrentSession,limit:i32) -> CDRSResult<Vec<Departement>> {
-    let values = query_values!(limit);
+    let values = query_values!(format!("{}",limit));
     session.query_with_values(SELECT_ALL_DEPARTEMENT_QUERY,values)
         .and_then(|res| res.get_body())
         .and_then(|body| {
@@ -198,25 +232,54 @@ pub fn select_regions_name(session: &mut CurrentSession)->CDRSResult<Vec<Region>
         })
 }
 
-pub fn select_all_communes(session: &mut CurrentSession)->CDRSResult<Vec<Commune>>{
-    session.query(SELECT_ALL_COMMUNE_QUERY)
-        .and_then(|res| res.get_body())
-        .and_then(|body| {
-            body
-                .into_rows()
-                .ok_or(Error::General("cannot get rows from a response body".to_string()))
-        })
-        .and_then(|rows| {
-            let mut communes: Vec<Commune> = Vec::with_capacity(rows.len());
-
-            for row in rows {
-                communes.push(Commune::try_from_row(row)?);
+pub fn select_all_communes(session: &mut CurrentSession,page:i32,last_commune:Option<i32>)->CDRSResult<Vec<Commune>>{
+    let mut select:String;
+    let mut params;
+    match last_commune {
+            Some(last_id)=> {
+                select = SELECT_ALL_COMMUNE_PAGING_QUERY.to_string();
+                let q=format!("{}",last_id);
+                params = query_values!(q);
+                session.query_with_values(select,params)
+                    .and_then(|res| res.get_body())
+                    .and_then(|body| {
+                        body
+                            .into_rows()
+                            .ok_or(Error::General("cannot get rows from a response body".to_string()))
+                    })
+                    .and_then(|rows| {
+                        let mut communes: Vec<Commune> = Vec::with_capacity(rows.len());
+                        for row in rows {
+                            communes.push(Commune::try_from_row(row)?);
+                        }
+                        Ok(communes)
+                    })
             }
+            None=>{
+                select=SELECT_ALL_COMMUNE_QUERY.to_string();
+                session.query(select)
+                    .and_then(|res| res.get_body())
+                    .and_then(|body| {
+                        body
+                            .into_rows()
+                            .ok_or(Error::General("cannot get rows from a response body".to_string()))
+                    })
+                    .and_then(|rows| {
+                        let mut communes: Vec<Commune> = Vec::with_capacity(rows.len());
 
-            Ok(communes)
-        })
+                        for row in rows {
+                            communes.push(Commune::try_from_row(row)?);
+                        }
+
+                        Ok(communes)
+                    })
+            }
+        }
+
+
+
 }
-pub fn select_commune_by_name(session: &mut CurrentSession,name:String,limit:i32)->CDRSResult<Vec<Commune>>{
+pub fn select_commune_by_name(session: &mut CurrentSession,name:String,last_id:Option<i32>)->CDRSResult<Vec<Commune>>{
     let values=query_values!(name);
     session.query_with_values(SELECT_ALL_COMMUNE_NAME_QUERY,values)
         .and_then(|res| res.get_body())
@@ -235,7 +298,7 @@ pub fn select_commune_by_name(session: &mut CurrentSession,name:String,limit:i32
             Ok(communes)
         })
 }
-pub fn select_commune_by_departement(session: &mut CurrentSession,name:String,limit:i32)->CDRSResult<Vec<Commune>>{
+pub fn select_commune_by_departement(session: &mut CurrentSession,name:String,last_id:Option<i32>)->CDRSResult<Vec<Commune>>{
     let values=query_values!(name);
     session.query_with_values(SELECT_ALL_COMMUNE_BY_DEPARTEMENT_QUERY,values)
         .and_then(|res| res.get_body())
@@ -254,9 +317,29 @@ pub fn select_commune_by_departement(session: &mut CurrentSession,name:String,li
             Ok(communes)
         })
 }
-pub fn select_commune_by_region(session: &mut CurrentSession,name:String)->CDRSResult<Vec<Commune>>{
+pub fn select_commune_by_region(session: &mut CurrentSession,name:String,last_id:Option<i32>)->CDRSResult<Vec<Commune>>{
     let values=query_values!(name);
     session.query_with_values(SELECT_ALL_COMMUNE_BY_REGION_QUERY,values)
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+            let mut communes: Vec<Commune> = Vec::with_capacity(rows.len());
+
+            for row in rows {
+                communes.push(Commune::try_from_row(row)?);
+            }
+
+            Ok(communes)
+        })
+}
+pub fn select_commune_by_paging(session: &mut CurrentSession,paging: CommunePaging)->CDRSResult<Vec<Commune>>{
+
+
+    session.query(SELECT_ALL_COMMUNE_QUERY)
         .and_then(|res| res.get_body())
         .and_then(|body| {
             body

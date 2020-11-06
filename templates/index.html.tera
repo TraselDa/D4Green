@@ -8,12 +8,10 @@
 </head>
 <body>
     <div class="container">
-
         <div class="content-column">
-
             <div class="search-column" style="width:100%" >
                 <div class="search-container" >
-                    <select name="select_box_region">
+                    <select name="select_box_region" id="box-region" onchange="selectRegion(this)">
                         {% for region in data.regions_names %}
                         <option>{{ region.nomr }}</option>
                         {% endfor %}
@@ -51,11 +49,11 @@
                         <table class="table" id="table-items" data-index="1" style="width:85%;">
                             <thead>
                             <tr>
-                                <th>Region</th>
+                                <th>Non Commune</th>
                                 <th>Departement</th>
-                                <th>Code Postal</th>
-                                <th>Commune</th>
-                                <th>Indice</th>
+                                <th>Region</th>
+                                <th>Population</th>
+                                <th>Score Global</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -70,7 +68,7 @@
                     </div>
                     <div class="loading-overlay"></div>
                     <div id="data-details">
-                        <p id="titre"> </p>
+
                     </div>
 
 
