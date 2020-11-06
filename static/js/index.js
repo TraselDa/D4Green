@@ -39,7 +39,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     loadingDiv.style.display="none";
     loadDatatable();
 });
-function loadDatatable(page=1,id=undefined,region=undefined){
+function loadDatatable(page=1,id=undefined,region=undefined,departement=undefined,commune){
     if (window.XMLHttpRequest) {
         httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = function() {
@@ -59,6 +59,10 @@ function loadDatatable(page=1,id=undefined,region=undefined){
             params["last_id"]=parseInt(id);
         if(region!=undefined)
             params["region"]=region;
+        if(departement!=undefined)
+            params["departement"]=departement;
+        if(commune!=undefined)
+            params["commune"]=commune;
         httpRequest.open('POST', '/loadTable', true);
         httpRequest.setRequestHeader("Content-Type", "application/x-commune-paging;charset=UTF-8");
         httpRequest.send(JSON.stringify(params));
@@ -108,4 +112,19 @@ function navigatePrev(){
 function selectRegion(parent){
     var value = document.getElementById("box-region").value;
     loadDatatable(1,undefined,value)
+}
+function  selectDepartement(parent){
+    var departement = document.getElementById("box-departement").value;
+    var region = document.getElementById("box-region").value;
+    region=region=="Tout"?undefined:region;
+    loadDatatable(1,undefined,region,departement)
+}
+function selectCommune(parent){
+    var region = document.getElementById("box-region").value;
+    region=region=="Tout"?undefined:region;
+    var departement = document.getElementById("box-departement").value;
+    departement=departement=="Tout"?undefined:departement;
+    var commune = document.getElementById("box-commune").value;
+
+    loadDatatable(1,undefined,region,departement,commune)
 }

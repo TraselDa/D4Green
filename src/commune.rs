@@ -23,6 +23,23 @@ pub struct Commune {
     score_global:String
 }
 
+#[derive(Clone, Debug, TryFromRow,Serialize, Deserialize)]
+pub struct CommuneName {
+    id:i64,
+    nom_com:String,
+}
+impl CommuneName {
+
+    pub fn into_query_values(self) -> QueryValues {
+        query_values!(
+        "id"=>self.id,
+        "nom_com"=>self.nom_com
+        )
+
+    }
+
+
+}
 impl Commune {
 
     pub fn into_query_values(self) -> QueryValues {

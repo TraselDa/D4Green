@@ -29,8 +29,14 @@ extern crate rocket;
 #[derive(Clone, Debug,Serialize, Deserialize)]
 struct DataRS{
     departements_names:Option<std::vec::Vec<departement::DepartementName>>,
-    communes:Option<std::vec::Vec<commune::Commune>>,
-    regions_names:Option<std::vec::Vec<region::Region>>
+    communes_names:Option<std::vec::Vec<commune::CommuneName>>,
+    regions_names:Option<std::vec::Vec<region::Region>>,
+    total_departements:i32,
+    total_communes:i32,
+    total_regions:i32,
+    bigest_population:Option<commune::Commune>,
+    first_classement:Option<commune::Commune>,
+    best_indice:Option<commune::Commune>
 }
 
 
@@ -39,6 +45,7 @@ fn index() -> Template {
     let mut session = connect_to_db();
     let results_dep=db::select_departements_name(&mut session);
     let results_reg=db::select_regions_name(&mut session);
+    let results_com=db::select_communes_name(&mut session);
     let mut departements=None;
     let mut regions=None;
     let mut communes=None;
@@ -48,12 +55,21 @@ fn index() -> Template {
     if results_reg.is_ok(){
         regions=results_reg.ok();
     }
+    if results_com.is_ok(){
+        communes=results_com.ok();
+    }
 
     let mut context:HashMap<&str, _ > = HashMap::new();
     let data=DataRS{
         departements_names:departements,
         regions_names:regions,
-        communes
+        total_departements: 0,
+        total_communes: 0,
+        total_regions: 0,
+        bigest_population: None,
+        first_classement: None,
+        communes_names:communes,
+        best_indice: None
     };
     context.insert("data",data);
     Template::render("index",&context)

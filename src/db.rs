@@ -16,6 +16,8 @@ use cdrs::{
 use crate::CommunePaging;
 use crate::departement::*;
 use crate::commune::Commune;
+use crate::commune::CommuneName;
+
 use crate::region::Region;
 use cdrs::error::*;
 use crate::cdrs::frame::TryFromRow;
@@ -43,7 +45,21 @@ static SELECT_ALL_DEPARTEMENTS_NAME_QUERY: &'static str = r#"
   SELECT nomdep FROM eclipse_base.Departements;
 "#;
 
-
+static REGION_FIELDS :&'static str=r#"id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global"#;
 
 static SELECT_ALL_REGION_NAME_QUERY: &'static str = r#"
   SELECT nomr FROM eclipse_base.Region;
@@ -51,6 +67,7 @@ static SELECT_ALL_REGION_NAME_QUERY: &'static str = r#"
 static SELECT_ALL_REGION_BY_NAME_QUERY: &'static str = r#"
   SELECT nomr FROM eclipse_base.Region WHERE nomr LIKE %?%;
 "#;
+
 static SELECT_ALL_COMMUNE_QUERY: &'static str = r#"
   SELECT id,
   nom_com ,
@@ -69,16 +86,59 @@ static SELECT_ALL_COMMUNE_QUERY: &'static str = r#"
     score_global FROM eclipse_base.communes_temp LIMIT 20 ALLOW FILTERING;
 "#;
 static SELECT_ALL_COMMUNE_NAME_QUERY: &'static str = r#"
-  SELECT nom_com FROM eclipse_base.communes;
+  SELECT id,nom_com FROM eclipse_base.communes_temp;
 "#;
 static SELECT_ALL_COMMUNE_BY_NAME_QUERY: &'static str = r#"
-  SELECT nom_com,nomdep,nomr FROM eclipse_base.communes WHERE nom_com LIKE %?% LIMIT 20;
+  SELECT id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global FROM eclipse_base.communes WHERE nom_com=? LIMIT 20 ALLOW FILTERING;
 "#;
-static SELECT_ALL_COMMUNE_BY_DEPARTEMENT_QUERY: &'static str = r#"
-  SELECT nomr FROM eclipse_base.communes WHERE nomdep LIKE %?% LIMIT 20;
-"#;
+static SELECT_ALL_COMMUNE_BY_DEPARTEMENT_QUERY: &'static str = r#"SELECT
+id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global
+ FROM eclipse_base.communes_temp WHERE nomdep = ? LIMIT 20 ALLOW FILTERING"#;
+
 static SELECT_ALL_COMMUNE_BY_REGION_QUERY: &'static str = r#"
-  SELECT nomr FROM eclipse_base.communes WHERE nomr LIKE %?% LIMIT 20;
+  SELECT id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global FROM eclipse_base.communes_temp WHERE nomr = ? LIMIT 20 ALLOW FILTERING;
 "#;
 static SELECT_ALL_COMMUNE_PAGING_QUERY: &'static str = r#"
    SELECT id,
@@ -281,7 +341,7 @@ pub fn select_all_communes(session: &mut CurrentSession,page:i32,last_commune:Op
 }
 pub fn select_commune_by_name(session: &mut CurrentSession,name:String,last_id:Option<i32>)->CDRSResult<Vec<Commune>>{
     let values=query_values!(name);
-    session.query_with_values(SELECT_ALL_COMMUNE_NAME_QUERY,values)
+    session.query_with_values(SELECT_ALL_COMMUNE_BY_NAME_QUERY,values)
         .and_then(|res| res.get_body())
         .and_then(|body| {
             body
@@ -328,7 +388,6 @@ pub fn select_commune_by_region(session: &mut CurrentSession,name:String,last_id
         })
         .and_then(|rows| {
             let mut communes: Vec<Commune> = Vec::with_capacity(rows.len());
-
             for row in rows {
                 communes.push(Commune::try_from_row(row)?);
             }
@@ -356,3 +415,21 @@ pub fn select_commune_by_paging(session: &mut CurrentSession,paging: CommunePagi
             Ok(communes)
         })
 }
+ pub fn select_communes_name(session: &mut CurrentSession)->CDRSResult<Vec<CommuneName>>{
+    session.query(SELECT_ALL_COMMUNE_NAME_QUERY)
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+            let mut communes: Vec<CommuneName> = Vec::with_capacity(rows.len());
+            for row in rows {
+                communes.push(CommuneName::try_from_row(row)?);
+            }
+
+            Ok(communes)
+        })
+}
+
