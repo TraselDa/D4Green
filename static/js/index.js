@@ -30,7 +30,42 @@ function toogle(data)
 var loadingDiv;
 function voir_details(x)
 {
-    document.getElementById("titre").innerHTML = "details" + x.id;
+    document.getElementById("_NOM_R_DEP").innerHTML = x["nomdep"] + " & "+ x["nomr"];
+    document.getElementById("_NOM_R_DEP").style.fontWeight = "Bold";
+
+    document.getElementById("_CLASSEMENT_").innerHTML = "N : " + x["classement"];
+    document.getElementById("_CLASSEMENT_").style.fontWeight = "Bold" ;
+    document.getElementById("_CLASSEMENT_").style.color = "Red" ;
+
+    document.getElementById("_IRIS_._NC_").innerHTML = x["code_iris"] + x["nom_iris"];
+    document.getElementById("_IRIS_._NC_").style.fontWeight = "Bold";
+
+    document.getElementById("_POP_").innerHTML = "Population : " + x["population"];
+
+    document.getElementById("_COM_").innerHTML = x["nom_com"];
+    document.getElementById("_COM_").style.fontWeight = "Bold";
+    document.getElementById("_COM_").style.fontSize = "25px";
+
+    document.getElementById("_SCORE_G_").innerHTML = "SCORE Global : " + x["score_global"];
+    document.getElementById("_SCORE_G_").style.fontWeight = "Bold";
+
+    document.getElementById("_GLOBAL_ACCES_").innerHTML = "Global Acces : " + x["global_acces"];
+    document.getElementById("_GLOBAL_ACCES_").style.fontWeight = "Bold";
+
+    document.getElementById("_GLOBAL_COMP_").innerHTML = "Global Competences : " + x["global_competences"];
+    document.getElementById("_GLOBAL_COMP_").style.fontWeight = "Bold";
+
+    document.getElementById("_ACCES_A_LINFO_").innerHTML = "Acces a L information : " + x["acces_a_linformation"];
+    document.getElementById("_ACCES_A_LINFO_").style.fontWeight = "Bold";
+    document.getElementById("_ACCES_A_LINTERFACE_").innerHTML = "Acces aux interfaces numeriques : " + x["acces_aux_interfaces_numerique"];
+    document.getElementById("_ACCES_A_LINTERFACE_").style.fontWeight = "Bold";
+
+    document.getElementById("_COMPETENCES_ADMIN_").innerHTML = "Competences Administratives : " + x["competences_administratives"];
+    document.getElementById("_COMPETENCES_ADMIN_").style.fontWeight = "Bold";
+    document.getElementById("_COMPETENCES_NUM_").innerHTML = "Competences numeriques : " + x["competences_numeriques"];
+    document.getElementById("_COMPETENCES_NUM_").style.fontWeight = "Bold";
+
+
 }
 
 

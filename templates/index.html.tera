@@ -3,6 +3,7 @@
     <title>{% block title %}Eclipse Design4 Green{% endblock title %}</title>
     <link href="../static/css/index.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/images/favicon.ico" rel="icon">
 
 </head>
 <body>
@@ -60,7 +61,25 @@
                     </div>
                     <div class="loading-overlay"></div>
                     <div id="data-details">
+                        <p id="_COM_"> </p>
 
+                        <p id ="_CLASSEMENT_"> </p>
+
+                        <p id ="_IRIS_._NC_"> </p>
+                        <p id ="_NOM_R_DEP"> </p>
+                        <p id ="_POP_"> </p>
+                        <p style="font-size: 20px"> SCORE </p>
+                        <p id ="_SCORE_G_"> </p>
+                        <p id ="_GLOBAL_ACCES_"> </p>
+                        <p id ="_GLOBAL_COMP_"> </p>
+
+                        <p id ="_ACCES_A_LINFO_"> </p>
+                        <p id ="_ACCES_A_LINTERFACE_"> </p>
+
+                        <p id ="_COMPETENCES_ADMIN_"> </p>
+                        <p id ="_COMPETENCES_NUM_"> </p>
+
+                        <a href="">telecharger</a>
                     </div>
 
 
