@@ -25,25 +25,6 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="select_container">
-                        <label>Selection d'un département</label>
-                        <select name="select_box_departement" id="box-departement" class="select_box" onchange="selectDepartement(this)">
-                            <option>Tout</option>
-                            {% for departement in data.departements_names %}
-                            <option>{{ departement.nomdep }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="select_container">
-                        <label>Selection d'une commune</label>
-                        <select name="select_box_commune" id="box-commune" class="select_box" onchange="selectCommune(this)">
-                            <option>Tout</option>
-                            {% for commune in data.communes_names %}
-                            <option>{{ commune.nom_com }}</option>
-                            {% endfor %}
-
-                        </select>
-                    </div>
                     </div>
                 <h4>Liste des communes dans leurs départements</h4>
                 <div class="data_table">
