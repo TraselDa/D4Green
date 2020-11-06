@@ -4,6 +4,7 @@
     <title>{% block title %}Yessss{% endblock title %}</title>
     <link href="../static/css/index.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/images/favicon.ico" rel="icon">
 
 </head>
 <body>
@@ -86,6 +87,7 @@
                         <p id ="_COMPETENCES_ADMIN_"> </p>
                         <p id ="_COMPETENCES_NUM_"> </p>
 
+                        <a href="">telecharger</a>
                     </div>
 
 
