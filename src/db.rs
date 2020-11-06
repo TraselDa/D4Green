@@ -88,7 +88,7 @@ static SELECT_ALL_COMMUNE_QUERY: &'static str = r#"
     nomdep ,
     nomr ,
     population,
-    score_global FROM eclipse_base.communes_temp LIMIT 20 ALLOW FILTERING;
+    score_global FROM eclipse_base.communes_temp LIMIT 100 ALLOW FILTERING;
 "#;
 static SELECT_COMMUNE_BY_IDS: &'static str = r#"
   SELECT id,
@@ -108,7 +108,7 @@ static SELECT_COMMUNE_BY_IDS: &'static str = r#"
     score_global FROM eclipse_base.communes_temp WHERE id= ? LIMIT 1 ALLOW FILTERING;
 "#;
 static SELECT_ALL_COMMUNE_NAME_QUERY: &'static str = r#"
-  SELECT id,nom_com FROM eclipse_base.communes_temp;
+  SELECT id,nom_com FROM eclipse_base.communes_temp LIMIT 20 ALLOW FILTERING;
 "#;
 static SELECT_ALL_COMMUNE_BY_NAME_QUERY: &'static str = r#"
   SELECT id,
@@ -213,7 +213,7 @@ pub fn create_keyspace(session: &mut CurrentSession) -> CDRSResult<()> {
 }
 pub fn create_db_session() -> CDRSResult<CurrentSession> {
     let auth = NoneAuthenticator;
-    let node = NodeTcpConfigBuilder::new("146.59.196.39:9042", auth).build();
+    let node = NodeTcpConfigBuilder::new("127.0.0.1:9042", auth).build();
     let cluster_config = ClusterTcpConfig(vec![node]);
     new_session(&cluster_config, SingleNode::new())
 }
