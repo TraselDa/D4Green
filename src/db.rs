@@ -45,6 +45,10 @@ static SELECT_ALL_DEPARTEMENT_QUERY: &'static str = r#"
 static SELECT_ALL_DEPARTEMENTS_NAME_QUERY: &'static str = r#"
   SELECT nomdep FROM eclipse_base.Departements;
 "#;
+static SELECT_DEPARTEMENT_BY_NAME: &'static str = r#"
+  SELECT nomdep,nomr,indice FROM eclipse_base.Departements;
+"#;
+
 
 static REGION_FIELDS :&'static str=r#"id,
   nom_com ,
@@ -85,6 +89,23 @@ static SELECT_ALL_COMMUNE_QUERY: &'static str = r#"
     nomr ,
     population,
     score_global FROM eclipse_base.communes_temp LIMIT 20 ALLOW FILTERING;
+"#;
+static SELECT_COMMUNE_BY_IDS: &'static str = r#"
+  SELECT id,
+  nom_com ,
+    code_iris ,
+    acces_a_linformation ,
+    acces_aux_interfaces_numerique ,
+    classement ,
+    competences_administratives ,
+    competences_numeriques ,
+    global_acces ,
+    global_competences ,
+    nom_iris ,
+    nomdep ,
+    nomr ,
+    population,
+    score_global FROM eclipse_base.communes_temp WHERE id= ? LIMIT 1 ALLOW FILTERING;
 "#;
 static SELECT_ALL_COMMUNE_NAME_QUERY: &'static str = r#"
   SELECT id,nom_com FROM eclipse_base.communes_temp;
@@ -388,7 +409,11 @@ pub fn select_commune_by_departement(session: &mut CurrentSession,name:String,la
         })
 }
 pub fn select_commune_by_region(session: &mut CurrentSession,name:String,last_id:Option<i32>)->CDRSResult<Vec<Commune>>{
-    let values=query_values!(name);
+
+    let values=match last_id{
+        Some(id)=>query_values!(name,id),
+        None=>query_values!(name)
+    };
     session.query_with_values(SELECT_ALL_COMMUNE_BY_REGION_QUERY,values)
         .and_then(|res| res.get_body())
         .and_then(|body| {
@@ -401,7 +426,6 @@ pub fn select_commune_by_region(session: &mut CurrentSession,name:String,last_id
             for row in rows {
                 communes.push(Commune::try_from_row(row)?);
             }
-
             Ok(communes)
         })
 }
@@ -499,3 +523,30 @@ fn get_total_regions(session: &mut CurrentSession)->i32{
         None=>0
     }
 }
+/*
+pub fn get_commune(session: &mut CurrentSession,ids:String)->CDRSResult<Commune>{
+    session.query_with_values(SELECT_COMMUNE_BY_IDS,query_values!(ids))
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+                let commune=Commune::try_from_row(rows[0])?;
+            Ok(commune)
+        })
+}
+pub fn get_departement(session: &mut CurrentSession,name:String)->CDRSResult<Departement>{
+    session.query_with_values(SELECT_DEPARTEMENT_BY_NAME,query_values!(name))
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+            let commune=Departement::try_from_row(rows[0])?;
+            Ok(commune)
+        })
+}*/

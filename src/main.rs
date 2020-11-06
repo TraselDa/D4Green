@@ -16,14 +16,20 @@ use rocket_contrib::{json::{Json}};
 use serde_json::Result;
 use rocket::data::FromDataSimple;
 use rocket::{Request, Data, data, Outcome};
-use rocket::http::{ContentType, Status};
+use rocket::http::{ContentType, Status, RawStr};
 use std::io::Read;
 use rocket::outcome::Outcome::{Failure, Success};
 mod commune;
 mod departement;
 mod region;
 mod db;
+use rocket::response::NamedFile;
+use rocket::response::status::NotFound;
 use crate::db::Statistic;
+use std::path::Path;
+use printpdf::*;
+use std::fs::File;
+use std::io::BufWriter;
 
 #[macro_use]
 extern crate rocket;
@@ -87,15 +93,45 @@ fn loadTable(paging:CommunePaging) -> Json<Vec<commune::Commune>>
             Some(x)=>return Json(x),
             None=>{}
         }
-
     }
     return Json(empty)
 }
+
+#[get("/download/<id>")]
+fn download(id:&RawStr) -> std::io::Result<NamedFile> {
+    let mut session = connect_to_db();
+    let path = Path::new("static/").join(id.as_str().to_string()).join(".pdf");
+/*
+    let result_commune=db::get_commune(&mut session,id.as_str().to_string());
+    if result_commune.is_ok(){
+        let commune=result_commune.ok();
+        match commune{
+            Some(com)=>{
+
+                let result_departement=db::get_departement(&mut session,com.get_departement());
+                if result_departement.is_ok(){
+                    let (doc, page1, layer1) = PdfDocument::new(format!("Document commune {}",com.get_nom()), Mm(247.0), Mm(210.0), "Layer 1");
+                    let current_layer = doc.get_page(page1).get_layer(layer1);
+                    current_layer.begin_text_section();
+                    let font = doc.add_builtin_font(BuiltinFont::TimesBold).unwrap();
+                    current_layer.write_text("",&font);
+                    doc.save(&mut BufWriter::new(File::create(path).unwrap())).unwrap();
+                };
+            }
+            ,
+            None=>{}
+        }
+
+
+    };*/
+    NamedFile::open(&path)
+}
+
 fn main() {
     rocket::ignite()
         .mount("/static",StaticFiles::from("./static"))
         .attach(Template::fairing())
-        .mount("/", routes![index,loadTable]).launch();
+        .mount("/", routes![index,loadTable,download]).launch();
 
 }
 
@@ -104,8 +140,6 @@ fn connect_to_db() -> db::CurrentSession {
     db::create_keyspace(&mut session).expect("create keyspace error");
     session
 }
-
-
 #[derive(Serialize, Deserialize)]
 pub struct CommunePaging{
     current_page:i32,
@@ -147,7 +181,6 @@ impl FromDataSimple for CommunePaging {
             return match p.ok(){
                 Some(x)=>Success(x),
                 None=>Failure((Status::InternalServerError,"Erreur survenue dans la conversion".to_string()))
-
             }
         }
         return Failure((Status::InternalServerError, "Erreur survenue dans la conversion".to_string()));

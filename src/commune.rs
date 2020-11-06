@@ -34,9 +34,8 @@ impl CommuneName {
         query_values!(
         "id"=>self.id,
         "nom_com"=>self.nom_com
-        )
+        )}
 
-    }
 
 
 }
@@ -60,5 +59,10 @@ impl Commune {
 
     }
 
-
+    pub fn get_nom(self)->String{
+        self.nom_com
+    }
+    pub fn get_departement(self)->String{
+        self.nomdep
+    }
 }

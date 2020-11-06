@@ -27,7 +27,6 @@ function toogle(data)
     }
 
 }
-var loadingDiv;
 function voir_details(x)
 {
     document.getElementById("_POP_").innerHTML = "Population : " + x["population"];
@@ -69,14 +68,14 @@ function voir_details(x)
     document.getElementById("_COMPETENCES_ADMIN_").style.fontWeight = "Bold";
     document.getElementById("_COMPETENCES_NUM_").innerHTML = "Competences numeriques : " + x["competences_numeriques"];
     document.getElementById("_COMPETENCES_NUM_").style.fontWeight = "Bold";
+    var download_btn=document.getElementById("dwn_btn");
+    download_btn.href="/download/"+x.id;
 
 
 }
 
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    loadingDiv=document.getElementsByClassName("loading-overlay")[0];
-    loadingDiv.style.display="none";
     loadDatatable();
 });
 function loadDatatable(page=1,id=undefined,region=undefined,departement=undefined,commune){

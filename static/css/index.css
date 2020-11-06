@@ -91,6 +91,7 @@ button {
 #data-details{
     flex: 0;
     display: none;
+    padding-left:30px;
 }
 .navigator-container{
     width: 20%;
@@ -179,3 +180,15 @@ button {
     font-weight: normal;
 
 }
+.download_btn{
+    background: burlywood;
+    color:white;
+    border-radius: 8px;
+    padding: 12px 15px;
+    text-decoration: none;
+    font-size: 22px;
+    width: 60%;
+    display: block;
+    text-align: center;
+    margin-left: 20%;
+    margin-top: 50px;}

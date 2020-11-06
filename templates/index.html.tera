@@ -61,12 +61,10 @@
                             </tbody>
                         </table>
                         <div class="navigator-container">
-                            <a href="#" class="btn-navigate" onclick="navigatePrev()"><</a>
-                            <a href="#" class="btn-navigate" onclick="navigateNext()">></a>
-
+                            <a href="#" class="btn-navigate" onclick="navigatePrev()">&lt;</a>
+                            <a href="#" class="btn-navigate" onclick="navigateNext()">&gt;</a>
                         </div>
                     </div>
-                    <div class="loading-overlay"></div>
                     <div id="data-details">
                         <p id="_COM_" style="text-decoration: underline"> </p>
                         <p id ="_POP_"> </p>
@@ -88,11 +86,8 @@
 
                         <p id ="_COMPETENCES_ADMIN_"> </p>
                         <p id ="_COMPETENCES_NUM_"> </p>
-
-                        <a href="" style="color: orange; font-size: 40px">telecharger</a>
+                        <a href="" id="dwn_btn" class="download_btn">telecharger</a>
                     </div>
-
-
                 </div>
             </div>
 
