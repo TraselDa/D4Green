@@ -23,6 +23,8 @@ mod commune;
 mod departement;
 mod region;
 mod db;
+use crate::db::Statistic;
+
 #[macro_use]
 extern crate rocket;
 
@@ -31,12 +33,7 @@ struct DataRS{
     departements_names:Option<std::vec::Vec<departement::DepartementName>>,
     communes_names:Option<std::vec::Vec<commune::CommuneName>>,
     regions_names:Option<std::vec::Vec<region::Region>>,
-    total_departements:i32,
-    total_communes:i32,
-    total_regions:i32,
-    bigest_population:Option<commune::Commune>,
-    first_classement:Option<commune::Commune>,
-    best_indice:Option<commune::Commune>
+    statistic:Option<db::Statistic>
 }
 
 
@@ -63,13 +60,8 @@ fn index() -> Template {
     let data=DataRS{
         departements_names:departements,
         regions_names:regions,
-        total_departements: 0,
-        total_communes: 0,
-        total_regions: 0,
-        bigest_population: None,
-        first_classement: None,
+        statistic:None,
         communes_names:communes,
-        best_indice: None
     };
     context.insert("data",data);
     Template::render("index",&context)

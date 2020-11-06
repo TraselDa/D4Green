@@ -10,36 +10,43 @@
     <div class="container">
         <div class="content-column">
             <div class="search-column" style="width:100%" >
+                <h2>
+                    Site statistique de pénétratration du numérique dans les Communes de France
+                </h2>
                 <div class="search-container" >
-                    <select name="select_box_region" id="box-region" onchange="selectRegion(this)">
-                        <option>Tout</option>
-                        {% for region in data.regions_names %}
-                        <option>{{ region.nomr }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="select_box_departement" id="box-departement" onchange="selectDepartement(this)">
-                        <option>Tout</option>
-                        {% for departement in data.departements_names %}
+                    <div class="select_container">
+                        <label>Selection d'un département</label>
+                        <select name="select_box_region"  class="select_box" id="box-region" onchange="selectRegion(this)">
+                            <option>Tout</option>
+                            {% for region in data.regions_names %}
+                            <option>{{ region.nomr }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select_container">
+                        <label>Selection d'un département</label>
+                        <select name="select_box_departement" id="box-departement" class="select_box" onchange="selectDepartement(this)">
+                            <option>Tout</option>
+                            {% for departement in data.departements_names %}
                             <option>{{ departement.nomdep }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="select_box_commune" id="box-commune" onchange="selectCommune(this)">
-                        <option>Tout</option>
-                        {% for commune in data.communes_names %}
-                        <option>{{ commune.nom_com }}</option>
-                        {% endfor %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select_container">
+                        <label>Selection d'un département</label>
+                        <select name="select_box_commune" id="box-commune" class="select_box" onchange="selectCommune(this)">
+                            <option>Tout</option>
+                            {% for commune in data.communes_names %}
+                            <option>{{ commune.nom_com }}</option>
+                            {% endfor %}
 
-                    </select>
-
-
-                </div>
-
-                <div class="data_global">
-                    not vide
-                </div>
+                        </select>
+                    </div>
+                    </div>
+                <h4>Liste des communes dans leurs départements</h4>
                 <div class="data_table">
                     <div id="table-data" style="min-height: 300px">
-                        <table class="table" id="table-items" data-index="1" style="width:85%;">
+                        <table class="table" id="table-items" data-index="1">
                             <thead>
                             <tr>
                                 <th>Non Commune</th>

@@ -17,10 +17,11 @@ use crate::CommunePaging;
 use crate::departement::*;
 use crate::commune::Commune;
 use crate::commune::CommuneName;
-
 use crate::region::Region;
 use cdrs::error::*;
 use crate::cdrs::frame::TryFromRow;
+use serde::{Serialize, Deserialize};
+
 
 static CREATE_KEYSPACE_QUERY: &'static str = r#"
   CREATE KEYSPACE IF NOT EXISTS tutorial
@@ -176,6 +177,15 @@ static SELECT_ALL_COMMUNE_ALL_PARAMS_QUERY:&'static str = r#"
 "#;
 
 pub type CurrentSession = Session<SingleNode<TcpConnectionPool<NoneAuthenticator>>>;
+
+
+#[derive(Clone, Debug,Serialize, Deserialize)]
+pub struct Statistic {
+    total_departements:i32,
+    total_communes:i32,
+    total_regions:i32,
+
+}
 
 pub fn create_keyspace(session: &mut CurrentSession) -> CDRSResult<()> {
     session.query(CREATE_KEYSPACE_QUERY).map(|_| (()))
@@ -432,4 +442,60 @@ pub fn select_commune_by_paging(session: &mut CurrentSession,paging: CommunePagi
             Ok(communes)
         })
 }
+pub fn get_statistics(session: &mut CurrentSession) ->CDRSResult<Statistic>{
+    let statistic=Statistic{
+        total_departements: get_total_departement(session),
+        total_communes: get_total_communes(session),
+        total_regions: get_total_regions(session)
+    };
+    Ok(statistic)
 
+}
+fn get_total_communes(session: &mut CurrentSession)->i32{
+    match session.query("SELECT count(nom_com) FROM eclipse_base.communes_temp")
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+
+            return Ok(30);
+        }).ok(){
+        Some(x)=>x,
+        None=>0
+    }
+}
+fn get_total_departement(session: &mut CurrentSession)->i32{
+    match session.query("SELECT count(nomr) FROM eclipse_base.Regions")
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+
+            return Ok(30);
+        }).ok(){
+        Some(x)=>x,
+        None=>0
+    }
+}
+fn get_total_regions(session: &mut CurrentSession)->i32{
+    match session.query("SELECT count(nomr) FROM eclipse_base.Regions")
+        .and_then(|res| res.get_body())
+        .and_then(|body| {
+            body
+                .into_rows()
+                .ok_or(Error::General("cannot get rows from a response body".to_string()))
+        })
+        .and_then(|rows| {
+
+            return Ok(30);
+        }).ok(){
+        Some(w)=>w,
+        None=>0
+    }
+}
