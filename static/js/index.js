@@ -1,6 +1,6 @@
-function toogle(y,commune)
+function toogle(data)
 {
-
+    var {y,commune}=data;
     const x = document.getElementById("data-details");
     if(x.style.display === "none")
     {
@@ -77,7 +77,12 @@ function fillTableau(communes){
         row.insertCell().innerText=commune['nomr'];
         row.insertCell().innerText=commune['population'];
         row.insertCell().innerText=commune['score_global'];
-        row.insertCell().innerHTML='<button class="buttonVoir" onclick="toogle(this,commune)"> voir plus </button></td>';
+        var button=document.createElement("button");
+        button.className="buttonVoir";
+        button.innerText="Voir Plus";
+        button.id="voir_"+communeId;
+        button.addEventListener ("click",toogle.bind(this,{y:button,commune:commune}));
+        row.insertCell().appendChild(button);
 
     }
 }
