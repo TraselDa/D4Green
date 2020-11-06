@@ -1,92 +1,101 @@
-
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}Yessss{% endblock title %}</title>
+    <title>{% block title %}Eclipse Design4 Green{% endblock title %}</title>
     <link href="../static/css/index.css" rel="stylesheet">
-    <script type="text/javascript" src="../static/js/index.js"></script>
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/images/favicon.ico" rel="icon">
+
 </head>
+<body>
+    <div class="container">
+        <div class="content-column">
+            <div class="search-column" style="width:100%" >
+                <h2>
+                    Site statistique de pénétratration du numérique dans les Communes de France
+                </h2>
+                <div class="search-container" >
+                    <div class="select_container">
+                        <label>Selection d'un département</label>
+                        <select name="select_box_region"  class="select_box" id="box-region" onchange="selectRegion(this)">
+                            <option>Tout</option>
+                            {% for region in data.regions_names %}
+                            <option>{{ region.nomr }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select_container">
+                        <label>Selection d'un département</label>
+                        <select name="select_box_departement" id="box-departement" class="select_box" onchange="selectDepartement(this)">
+                            <option>Tout</option>
+                            {% for departement in data.departements_names %}
+                            <option>{{ departement.nomdep }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="select_container">
+                        <label>Selection d'un département</label>
+                        <select name="select_box_commune" id="box-commune" class="select_box" onchange="selectCommune(this)">
+                            <option>Tout</option>
+                            {% for commune in data.communes_names %}
+                            <option>{{ commune.nom_com }}</option>
+                            {% endfor %}
 
+                        </select>
+                    </div>
+                    </div>
+                <h4>Liste des communes dans leurs départements</h4>
+                <div class="data_table">
+                    <div id="table-data" style="min-height: 300px">
+                        <table class="table" id="table-items" data-index="1">
+                            <thead>
+                            <tr>
+                                <th>Non Commune</th>
+                                <th>Departement</th>
+                                <th>Region</th>
+                                <th>Population</th>
+                                <th>Score Global</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="table_body">
+                            </tbody>
+                        </table>
+                        <div class="navigator-container">
+                            <a href="#" class="btn-navigate" onclick="navigatePrev()">&lt;</a>
+                            <a href="#" class="btn-navigate" onclick="navigateNext()">&gt;</a>
+                        </div>
+                    </div>
+                    <div id="data-details">
+                        <p id="_COM_" style="text-decoration: underline"> </p>
+                        <p id ="_POP_"> </p>
 
-<div class="container">
+                        <p id ="_CLASSEMENT_">  </p>
 
-    <div class="content-column">
+                        <p id ="_IRIS_._NC_"> </p>
+                        <p id ="_NOM_R_DEP"> </p>
+                        <p style="font-size: 19px;text-decoration: underline"> SCORE REGION ET DEPARTEMENT </p>
+                        <p id ="_SCORE_R_DEP"> </p>
 
-        <div class="search-column" style="width:100%" >
-            <div class="search-container" >
+                        <p style="font-size: 17px;text-decoration: underline"> SCORE COMMUNE </p>
+                        <p id ="_SCORE_G_"> </p>
+                        <p id ="_GLOBAL_ACCES_"> </p>
+                        <p id ="_GLOBAL_COMP_"> </p>
 
-                <select name="select_box_region">
-                    <option>Pays de Loire</option>
-                    <option>hchdsdchd</option>
-                    <option>zk hh dhh</option>
-                    <option>uujanc</option>
-                    <option>sczf_he</option>
-                </select>
-                <select name="select_box_departement">
-                    <option>Pays de Loire</option>
-                    <option>hchdsdchd</option>
-                    <option>zk hh dhh</option>
-                    <option>uujanc</option>
-                    <option>sczd_he</option>
-                </select>
-                <select name="select_box_commune">
-                    <option>Pays de Loire</option>
-                    <option>hchdsdchd</option>
-                    <option>zk hh dhh</option>
-                    <option>uujanc</option>
-                    <option>sczd_he</option>
-                </select>
-                <select name="select_box_codepostal">
-                    <option>Pays de Loire</option>
-                    <option>hchdsdchd</option>
-                    <option>zk hh dhh</option>
-                    <option>uujanc</option>
-                    <option>sczd_he</option>
-                </select>
+                        <p id ="_ACCES_A_LINFO_"> </p>
+                        <p id ="_ACCES_A_LINTERFACE_"> </p>
 
-                <input id="search" type="search" placeholder="Search"/>
-
-
-            </div>
-
-            <div class="data_global">
-                not vide
-            </div>
-
-            <div class="data_table">
-                <div id="table-data">
-                <table class="table" style="width:85%">
-                    <tr>
-                        <th>Region</th>
-                        <th>Departement</th>
-                        <th>Code Postal</th>
-                        <th>Commune</th>
-                        <th>Indice</th>
-                        <th></th>
-                    </tr>
-                    {% for i in range(end=50) %}
-                    <tr id= " {{  i }} " >
-                        <td>Pays de Loire</td>
-                        <td>Maine et Loire</td>
-                        <td>Saint-Barthelemy-d'Anjou</td>
-                        <td>1420</td>
-                        <td>5662</td>
-                        <td><button id="voir{{  i }}" class="buttonVoir" onclick="toogle(this)"> voir plus </button></td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                        <p id ="_COMPETENCES_ADMIN_"> </p>
+                        <p id ="_COMPETENCES_NUM_"> </p>
+                        <a href="" id="dwn_btn" class="download_btn">telecharger</a>
+                    </div>
                 </div>
-
-                <div id="data-details">
-                    <p id="titre"> </p>
-                </div>
-
-
             </div>
+
+
+
+
         </div>
-
-
-
-
     </div>
-</div>
-</div>
+    <script type="text/javascript" src="../static/js/index.js"></script>
+</body>
+
