@@ -213,7 +213,7 @@ pub fn create_keyspace(session: &mut CurrentSession) -> CDRSResult<()> {
 }
 pub fn create_db_session() -> CDRSResult<CurrentSession> {
     let auth = NoneAuthenticator;
-    let node = NodeTcpConfigBuilder::new("127.0.0.1:9042", auth).build();
+    let node = NodeTcpConfigBuilder::new("146.59.196.39:9042", auth).build();
     let cluster_config = ClusterTcpConfig(vec![node]);
     new_session(&cluster_config, SingleNode::new())
 }

@@ -24,50 +24,29 @@ mod departement;
 mod region;
 mod db;
 use rocket::response::NamedFile;
-use rocket::response::status::NotFound;
-use crate::db::Statistic;
 use std::path::Path;
-use printpdf::*;
-use std::fs::File;
-use std::io::BufWriter;
 
 #[macro_use]
 extern crate rocket;
 
 #[derive(Clone, Debug,Serialize, Deserialize)]
 struct DataRS{
-    departements_names:Option<std::vec::Vec<departement::DepartementName>>,
-    communes_names:Option<std::vec::Vec<commune::CommuneName>>,
     regions_names:Option<std::vec::Vec<region::Region>>,
-    statistic:Option<db::Statistic>
 }
 
 
 #[get("/")]
 fn index() -> Template {
     let mut session = connect_to_db();
-    let results_dep=db::select_departements_name(&mut session);
     let results_reg=db::select_regions_name(&mut session);
-    let results_com=db::select_communes_name(&mut session);
-    let mut departements=None;
     let mut regions=None;
-    let mut communes=None;
-    if results_dep.is_ok(){
-        departements= results_dep.ok();
-    }
+   
     if results_reg.is_ok(){
         regions=results_reg.ok();
     }
-    if results_com.is_ok(){
-        communes=results_com.ok();
-    }
-
     let mut context:HashMap<&str, _ > = HashMap::new();
     let data=DataRS{
-        departements_names:departements,
         regions_names:regions,
-        statistic:None,
-        communes_names:communes,
     };
     context.insert("data",data);
     Template::render("index",&context)
