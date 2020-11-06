@@ -68,14 +68,17 @@
                     </div>
                     <div class="loading-overlay"></div>
                     <div id="data-details">
-                        <p id="_COM_"> </p>
+                        <p id="_COM_" style="text-decoration: underline"> </p>
+                        <p id ="_POP_"> </p>
 
-                        <p id ="_CLASSEMENT_"> </p>
+                        <p id ="_CLASSEMENT_">  </p>
 
                         <p id ="_IRIS_._NC_"> </p>
                         <p id ="_NOM_R_DEP"> </p>
-                        <p id ="_POP_"> </p>
-                        <p style="font-size: 20px"> SCORE </p>
+                        <p style="font-size: 19px;text-decoration: underline"> SCORE REGION ET DEPARTEMENT </p>
+                        <p id ="_SCORE_R_DEP"> </p>
+
+                        <p style="font-size: 17px;text-decoration: underline"> SCORE COMMUNE </p>
                         <p id ="_SCORE_G_"> </p>
                         <p id ="_GLOBAL_ACCES_"> </p>
                         <p id ="_GLOBAL_COMP_"> </p>
@@ -86,7 +89,7 @@
                         <p id ="_COMPETENCES_ADMIN_"> </p>
                         <p id ="_COMPETENCES_NUM_"> </p>
 
-                        <a href="">telecharger</a>
+                        <a href="" style="color: orange; font-size: 40px">telecharger</a>
                     </div>
 
 
