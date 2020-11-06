@@ -30,21 +30,26 @@ function toogle(data)
 var loadingDiv;
 function voir_details(x)
 {
+    document.getElementById("_POP_").innerHTML = "Population : " + x["population"];
+    document.getElementById("_POP_").style.fontSize = "20px";
+
+    document.getElementById("_COM_").innerHTML = x["nom_com"];
+    document.getElementById("_COM_").style.fontWeight = "Bold";
+    document.getElementById("_COM_").style.fontSize = "25px";
+
     document.getElementById("_NOM_R_DEP").innerHTML = x["nomdep"] + " & "+ x["nomr"];
     document.getElementById("_NOM_R_DEP").style.fontWeight = "Bold";
+
+    document.getElementById("_SCORE_R_DEP").innerHTML = "REGION: " + x["score_global"] + " | DEPARTEMENT: " + x["score_global"];
+    document.getElementById("_SCORE_R_DEP").style.fontWeight = "Bold";
+    document.getElementById("_SCORE_R_DEP").style.color = "Green" ;
 
     document.getElementById("_CLASSEMENT_").innerHTML = "N : " + x["classement"];
     document.getElementById("_CLASSEMENT_").style.fontWeight = "Bold" ;
     document.getElementById("_CLASSEMENT_").style.color = "Red" ;
 
-    document.getElementById("_IRIS_._NC_").innerHTML = x["code_iris"] + x["nom_iris"];
+    document.getElementById("_IRIS_._NC_").innerHTML ="Iris: C: "+  x["code_iris"]+ " "+ x["nom_iris"];
     document.getElementById("_IRIS_._NC_").style.fontWeight = "Bold";
-
-    document.getElementById("_POP_").innerHTML = "Population : " + x["population"];
-
-    document.getElementById("_COM_").innerHTML = x["nom_com"];
-    document.getElementById("_COM_").style.fontWeight = "Bold";
-    document.getElementById("_COM_").style.fontSize = "25px";
 
     document.getElementById("_SCORE_G_").innerHTML = "SCORE Global : " + x["score_global"];
     document.getElementById("_SCORE_G_").style.fontWeight = "Bold";
